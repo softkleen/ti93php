@@ -1,9 +1,8 @@
 <?php 
+include 'config.php';
 // comentário de linha
 # comentário de linha
 /* comentário de bloco */ 
-    // definindo timezone
-date_default_timezone_set('America/Sao_Paulo');
 
 // declaração de variáveis e matrizes - manipulação de data/hr - manipulação de string 
 $nome = "Wellington";
@@ -38,13 +37,10 @@ if(isset($_GET['enviar'])){
     $data_nasc = $_GET['txt-data-nasc'];
     $dataT = new DateTime($data_nasc);
     $data_nasc = date_format($dataT,'d-M-Y');
-
     $aluno = array('nome'=>$nome,'email'=>$email, 'datan'=>$data_nasc);
-
     foreach ($aluno as $key => $value) {
         echo('<h3>'.$key.': '.$value.'</h3>');
     }
-    
 }
 ?>
 <!DOCTYPE html>
@@ -56,7 +52,7 @@ if(isset($_GET['enviar'])){
     <title>Meu PHP</title>
 </head>
 <body>
-    <form action="#" method="get">
+    <form action="opform.php" method="post">
     <label for="txt-nome">
         Nome:
           <input type="text" name="txt-nome" placeholder="digite o Nome..." required maxlength="12">  
