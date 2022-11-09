@@ -30,18 +30,7 @@ if (!($grana>0)) { // caso retorne verdadeiro
 }
 // estrutura de repetição
 
-// funções e config.
-if(isset($_GET['enviar'])){
-    $nome = $_GET['txt-nome'];
-    $email = $_GET['txt-email'];
-    $data_nasc = $_GET['txt-data-nasc'];
-    $dataT = new DateTime($data_nasc);
-    $data_nasc = date_format($dataT,'d-M-Y');
-    $aluno = array('nome'=>$nome,'email'=>$email, 'datan'=>$data_nasc);
-    foreach ($aluno as $key => $value) {
-        echo('<h3>'.$key.': '.$value.'</h3>');
-    }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -52,7 +41,7 @@ if(isset($_GET['enviar'])){
     <title>Meu PHP</title>
 </head>
 <body>
-    <form action="opform.php" method="post">
+    <form action="opform.php" method="post" name="frm-aluno">
     <label for="txt-nome">
         Nome:
           <input type="text" name="txt-nome" placeholder="digite o Nome..." required maxlength="12">  
