@@ -4,7 +4,7 @@
 
     // Constantes (de banco de dados)
     // Enumerator - - 
-    const DATABASE = 'ti93db01';
+    const DATABASE = 'db_locadora_93';
     const SERVER_DB = '127.0.0.1';
     const USER_DB = 'root';
     const PASSWORD_DB = '';
