@@ -73,6 +73,8 @@ if(isset($_POST['inserir']))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes (<?php echo $num_rows?>)</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 <body>
     <form action="cliente.php" method="post">
@@ -98,6 +100,7 @@ if(isset($_POST['inserir']))
     </form>
     <h4>Clientes Cadastrados</h4>
     <table class="tabelinha">
+        <?php if ($num_rows>0) {?>
         <thead>
             <th>Cod</th>
             <th>Nome</th>
@@ -110,14 +113,21 @@ if(isset($_POST['inserir']))
                     <td><?php echo $row['cod_cliente'];?></td>
                     <td><?php echo $row['nome'];?></td>
                     <td><?php echo $row['cpf'];?></td>
-                    <td><a href="cliente.php?codedit=<?php echo $row['cod_cliente'];?>">Editar</a></td>
-                    <td><a href="cliente.php?codarq=<?php echo $row['cod_cliente'];?>">Arquivar</a></td>
+                    <td><a href="cliente.php?codedit=<?php echo $row['cod_cliente'];?>">
+                        <span class="material-icons">edit</span></a></td>
+                    <td><a href="cliente.php?codarq=<?php echo $row['cod_cliente'];?>">
+                        <span class="material-icons">drive_file_move_outline</span></a></td>
                 </tr>
-            <?php } while ($row = $lista->fetch())?>
+            <?php } while ($row = $lista->fetch());
+        }else{
+            echo '<td colspan=5>Não há clientes Cadastrados ativos</td>';
+        }
+            ?>
         </tbody>
     </table>
     <h4>Clientes Arquivados</h4>
     <table class="tabelinha">
+        <?php if ($num_rows_arq>0) {?>
         <thead>
             <th>Cod</th>
             <th>Nome</th>
@@ -130,10 +140,15 @@ if(isset($_POST['inserir']))
                     <td><?php echo $rowArq['cod_cliente'];?></td>
                     <td><?php echo $rowArq['nome'];?></td>
                     <td><?php echo $rowArq['cpf'];?></td>
-                    <td><a href="cliente.php?codrest=<?php echo $rowArq['cod_cliente'];?>">Restaurar</a></td>
+                    <td ><a href="cliente.php?codrest=<?php echo $rowArq['cod_cliente'];?>">
+                        <span class="material-icons">restore_page</span>Restaurar
+                    </a></td>
                     <td><a href="cliente.php?coddel=<?php echo $rowArq['cod_cliente'];?>">Deletar</a></td>
                 </tr>
-            <?php } while ($rowArq = $listaArq->fetch())?>
+            <?php } while ($rowArq = $listaArq->fetch());
+        }else{
+            echo '<td colspan=5>Não há clientes arquivados</td>';
+        }?>
         </tbody>
     </table>
 </body>
