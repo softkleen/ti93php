@@ -1,13 +1,17 @@
 <?php 
 include 'conecta.php';
 // criando consulta SQL 
-$consultaSql = "SELECT * FROM cliente order by nome asc, cod_cliente asc"; // negócio???
+$consultaSql = "SELECT * FROM cliente where deleted is null order by nome asc, cod_cliente asc"; // negócio???
+$consultaSqlArq = "SELECT * FROM cliente where deleted is not null order by nome asc, cod_cliente asc"; // negócio???
 // buscando e listando os dados da tabela (completa)
 $lista = $conn->query($consultaSql);
+$listaArq = $conn->query($consultaSqlArq);
 // separar em linhas
 $row = $lista->fetch();
+$rowArq = $listaArq->fetch();
 // retornando o númaru de linhas
 $num_rows = $lista->rowCount();
+$num_rows_arq = $listaArq->rowCount();
 
 // buscar cliente por id
 $nome = "";
@@ -21,6 +25,27 @@ if(isset($_GET['codedit']))
     $cpf = $cliente['cpf'];
     $cod = $_GET['codedit'];
 } 
+// arquivando registro de clientes
+if(isset($_GET['codarq']))
+{
+    $cliente = $conn->query(
+        'update cliente set deleted = now() where cod_cliente ='.$_GET['codarq'])->fetch();
+    header('location: cliente.php');
+}
+// restaurando registro de clientes
+if(isset($_GET['codrest']))
+{
+    $cliente = $conn->query(
+        'update cliente set deleted = null where cod_cliente ='.$_GET['codrest'])->fetch();
+    header('location: cliente.php');
+}
+// excluindo definitivamente registro de clientes
+if(isset($_GET['coddel']))
+{
+    $cliente = $conn->query(
+        'delete from cliente where cod_cliente ='.$_GET['coddel'])->fetch();
+    header('location: cliente.php');
+}
 // atualiza o registro de cliente
 if(isset($_POST['alterar']))
 {
@@ -71,6 +96,7 @@ if(isset($_POST['inserir']))
         </div>
        
     </form>
+    <h4>Clientes Cadastrados</h4>
     <table class="tabelinha">
         <thead>
             <th>Cod</th>
@@ -88,6 +114,26 @@ if(isset($_POST['inserir']))
                     <td><a href="cliente.php?codarq=<?php echo $row['cod_cliente'];?>">Arquivar</a></td>
                 </tr>
             <?php } while ($row = $lista->fetch())?>
+        </tbody>
+    </table>
+    <h4>Clientes Arquivados</h4>
+    <table class="tabelinha">
+        <thead>
+            <th>Cod</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th colspan="2">Ações</th>
+        </thead>
+        <tbody>
+            <?php do {?>
+                <tr>
+                    <td><?php echo $rowArq['cod_cliente'];?></td>
+                    <td><?php echo $rowArq['nome'];?></td>
+                    <td><?php echo $rowArq['cpf'];?></td>
+                    <td><a href="cliente.php?codrest=<?php echo $rowArq['cod_cliente'];?>">Restaurar</a></td>
+                    <td><a href="cliente.php?coddel=<?php echo $rowArq['cod_cliente'];?>">Deletar</a></td>
+                </tr>
+            <?php } while ($rowArq = $listaArq->fetch())?>
         </tbody>
     </table>
 </body>
